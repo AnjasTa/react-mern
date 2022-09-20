@@ -1,0 +1,7 @@
+.addButton{
+    display: flex;
+    justify-content: end;
+    gap: 50px;
+    margin-top: 1rem;
+    margin-right: 1rem;
+}
