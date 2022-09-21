@@ -73,7 +73,7 @@ const alertMessages = {
   add: "User added successfully....",
   update: "User Updated successfully...",
   warn: {
-    delete: "Are you want to delete this user?",
+    delete: "Are you want to delete this product?",
     logout: "Are you want to logout?",
     user: "please enter valid user name",
   },
@@ -83,7 +83,7 @@ const alertMessages = {
   },
   registration : {
     success :"Registred successfully"
-  }
+  },
 };
 
 const confirmPopup = {
