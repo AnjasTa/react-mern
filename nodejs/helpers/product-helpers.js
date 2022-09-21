@@ -31,5 +31,17 @@ module.exports = {
         }
       })
     })
+  },
+  updateProduct : (productData,updateId)=>{
+    return new Promise (async (resolve,reject)=>{
+      products.findByIdAndUpdate({_id:updateId.id},productData,{new:true},(error,data)=>{
+        if(error){
+          resolve(false)
+        }
+        else{
+          resolve(true)
+        }
+      })
+    })
   }
 };

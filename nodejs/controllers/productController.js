@@ -26,3 +26,14 @@ module.exports.product_delete = (req,res)=>{
         }
     })
 }
+
+module.exports.product_update = (req,res)=>{
+    productHelpers.updateProduct(req.body,req.params).then((data)=>{
+        if(data==true){
+            res.send({results:req.body,message:"update successfull"})
+        }
+        else{
+            res.send({message:'update error'})
+        }
+    })
+}

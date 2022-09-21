@@ -12,20 +12,19 @@ export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accessToken, setAccessToken] = useState();
   const [isEditingMode, setIsEditingMode] = useState(false);
-  // const [editDetails,setEditDetails] = useState(Object)
+  const [editDetails,setEditDetails] = useState(Object)
   const showModal = () => {
     setIsModalOpen(true);
-    
   };
 
   const getEditProduct = (data: any) => {
     setIsModalOpen(true);
-    // setEditDetails(data)
+    setEditDetails(data)
     form.setFieldsValue({
       productName: data.productName,
-      productDescription : data.productDescription,
-      productType : data.productType,
-      price : data.price
+      productDescription: data.productDescription,
+      productType: data.productType,
+      price: data.price,
     });
     setIsEditingMode(true);
   };
@@ -39,6 +38,8 @@ export default function Product() {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setIsEditingMode(false);
+    form.resetFields();
   };
   const submit = (formValues: any) => {
     const headers = {
@@ -46,19 +47,34 @@ export default function Product() {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     };
-    axios
-      .post(environment.baseUrl + "add-product", formValues, {
-        headers: headers,
-      })
-      .then((response) => {
-        message.success("Product added successfully");
-        setIsModalOpen(false);
-      })
-      .catch((err) => {
-        message.error(err);
-      });
+    if (!isEditingMode) {
+      axios
+        .post(environment.baseUrl + "add-product", formValues, {
+          headers: headers,
+        })
+        .then((response) => {
+          message.success("Product added successfully");
+          setIsModalOpen(false);
+        })
+        .catch((err) => {
+          message.error(err);
+        });
+    } else {
+      axios
+        .put(environment.baseUrl + "update-product/"+editDetails._id, formValues, {
+          headers: headers,
+        })
+        .then((response) => {
+          message.success("Product edited successfully");
+          setIsModalOpen(false);
+          setIsEditingMode(false);
+        })
+        .catch((err) => {
+          message.error(err);
+        });
+    }
+
     setIsModalOpen(false);
-    setIsEditingMode(false);
   };
   return (
     <div>
@@ -69,7 +85,7 @@ export default function Product() {
         </Button>
       </div>
       <Modal
-        title={!isEditingMode?'Add Product':'Edit Product'}
+        title={!isEditingMode ? "Add Product" : "Edit Product"}
         open={isModalOpen}
         centered
         footer
@@ -113,7 +129,7 @@ export default function Product() {
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
-            {isEditingMode?'Edit':'Add'}
+              {isEditingMode ? "Update" : "Add"}
             </Button>
           </Form.Item>
         </Form>
