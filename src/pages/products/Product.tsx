@@ -12,14 +12,14 @@ export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accessToken, setAccessToken] = useState();
   const [isEditingMode, setIsEditingMode] = useState(false);
-  const [editDetails,setEditDetails] = useState(Object)
+  const [editDetails, setEditDetails] = useState(Object);
   const showModal = () => {
     setIsModalOpen(true);
   };
 
   const getEditProduct = (data: any) => {
     setIsModalOpen(true);
-    setEditDetails(data)
+    setEditDetails(data);
     form.setFieldsValue({
       productName: data.productName,
       productDescription: data.productDescription,
@@ -48,33 +48,42 @@ export default function Product() {
       "Access-Control-Allow-Origin": "*",
     };
     if (!isEditingMode) {
-      axios
-        .post(environment.baseUrl + "add-product", formValues, {
-          headers: headers,
-        })
-        .then((response) => {
-          message.success("Product added successfully");
-          setIsModalOpen(false);
-        })
-        .catch((err) => {
-          message.error(err);
-        });
+      try {
+        axios
+          .post(environment.baseUrl + "add-product", formValues, {
+            headers: headers,
+          })
+          .then((response) => {
+            message.success("Product added successfully");
+            setIsModalOpen(false);
+            form.resetFields();
+          })
+          .catch((err) => {
+            message.error(err.response.data.error);
+          });
+      } catch (error: any) {
+        form.resetFields();
+        console.log(error);
+      }
     } else {
       axios
-        .put(environment.baseUrl + "update-product/"+editDetails._id, formValues, {
-          headers: headers,
-        })
+        .put(
+          environment.baseUrl + "update-product/" + editDetails._id,
+          formValues,
+          {
+            headers: headers,
+          }
+        )
         .then((response) => {
-          message.success("Product edited successfully");
+          message.success("Product updated successfully");
           setIsModalOpen(false);
           setIsEditingMode(false);
+          form.resetFields();
         })
         .catch((err) => {
-          message.error(err);
+          message.error(err.response.data.message);
         });
     }
-
-    setIsModalOpen(false);
   };
   return (
     <div>
@@ -125,7 +134,7 @@ export default function Product() {
             label={Products.formFields.Price.label}
             name={Products.formFields.Price.name}
           >
-            <Input />
+            <Input type='number'/>
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">

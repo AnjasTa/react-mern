@@ -3,7 +3,7 @@ import type { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { environment } from "../../environments";
-import { alertMessages } from "../../Global/constants";
+import { alertMessages, Products } from "../../Global/constants";
 import "../../styles/productList.css";
 
 interface DataType {
@@ -31,7 +31,7 @@ export default function ProductList(props:any) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [props]);
   const columns: ColumnsType<DataType> = [
     {
       title: "Product Name",
@@ -74,7 +74,7 @@ export default function ProductList(props:any) {
     props.onEdit(product)
   }
 
-  const deleteProduct = (product: any) => {
+  const deleteProduct = (prod: any) => {
     const token: any = localStorage.getItem("access-token");
     const headers = {
       Authorization: `Bearer ${token}`,
@@ -82,11 +82,18 @@ export default function ProductList(props:any) {
       "Access-Control-Allow-Origin": "*",
     };
     axios
-      .delete(environment.baseUrl + "delete-product/" + product._id, {
+      .delete(environment.baseUrl + "delete-product/" + prod._id, {
         headers: headers,
       })
       .then((response: any) => {
-        console.log(response);
+        const array:any = []
+        product.map((product: any) => {
+          if (product._id !== response.data.results._id) {
+            array.push(product)
+          }
+          return product;
+        });
+        SetProduct(()=>array)
       })
       .catch((err) => {
         console.log(err);

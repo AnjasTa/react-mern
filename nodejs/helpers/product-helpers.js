@@ -4,6 +4,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       products.create(productData, (error, data) => {
         if (error) {
+          reject(error)
         } else {
           resolve(data);
         }
@@ -24,10 +25,10 @@ module.exports = {
     return new Promise(async (resolve,reject)=>{
       products.findByIdAndDelete(deleteId.id,(error,data)=>{
         if(error){
-          resolve(false)
+          resolve({status:false})
         }
         else{
-          resolve(true)
+          resolve({status:true,info:data})
         }
       })
     })
