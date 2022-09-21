@@ -2,9 +2,10 @@ import { Button, Form, Input, message, Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
 import "../../styles/products.css";
-import { FormFields, rules, Products } from "../../Global/constants";
+import {  Products } from "../../Global/constants";
 import axios from "axios";
 import { environment } from "../../environments";
+import ProductList from "./ProductList";
 
 export default function Product() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -97,6 +98,7 @@ export default function Product() {
           </Form.Item>
         </Form>
       </Modal>
+      <ProductList/>
     </div>
   );
 }

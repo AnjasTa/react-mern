@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button, Form, Input, message } from "antd";
 import "../../styles/login.css";
 import { Link, useNavigate } from "react-router-dom";
