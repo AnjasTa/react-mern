@@ -8,15 +8,27 @@ import { environment } from "../../environments";
 import ProductList from "./ProductList";
 
 export default function Product() {
+  const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [accessToken, setAccessToken] = useState();
+  const [isEditingMode, setIsEditingMode] = useState(false);
+  // const [editDetails,setEditDetails] = useState(Object)
   const showModal = () => {
     setIsModalOpen(true);
+    
   };
 
-  const getEditProduct = ((data:any)=>{
-    console.log("incoming data",data)
-  })
+  const getEditProduct = (data: any) => {
+    setIsModalOpen(true);
+    // setEditDetails(data)
+    form.setFieldsValue({
+      productName: data.productName,
+      productDescription : data.productDescription,
+      productType : data.productType,
+      price : data.price
+    });
+    setIsEditingMode(true);
+  };
 
   // let navigate = useNavigate();
 
@@ -46,6 +58,7 @@ export default function Product() {
         message.error(err);
       });
     setIsModalOpen(false);
+    setIsEditingMode(false);
   };
   return (
     <div>
@@ -56,7 +69,7 @@ export default function Product() {
         </Button>
       </div>
       <Modal
-        title="Add Product"
+        title={!isEditingMode?'Add Product':'Edit Product'}
         open={isModalOpen}
         centered
         footer
@@ -69,6 +82,7 @@ export default function Product() {
           initialValues={{ remember: true }}
           autoComplete="off"
           onFinish={submit}
+          form={form}
         >
           <Form.Item
             label={Products.formFields.productName.label}
@@ -99,7 +113,7 @@ export default function Product() {
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
-              Add
+            {isEditingMode?'Edit':'Add'}
             </Button>
           </Form.Item>
         </Form>
