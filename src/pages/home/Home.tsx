@@ -9,6 +9,10 @@ export default function Home() {
     let objectData: any = localStorage.getItem("loginDetails");
     setloginDetails(JSON.parse(objectData));
   }, []);
+
+  // const fileUpload = ((event:any)=>{
+  //   const file = event.target.files[0];
+  // })
  
   return (
     <div>
@@ -20,6 +24,12 @@ export default function Home() {
       <div className="userData">
         <h3>Email : {loginDetails.email}</h3>
       </div>
+      {/* <div className="userData" style={{paddingTop:"1rem"}}>
+        <h3>Upload your photo</h3>
+      </div>
+      <div className="userData">
+        <input style={{paddingLeft:'2rem'}} type="file" onChange={fileUpload} />
+      </div> */}
    
     </div>
   );

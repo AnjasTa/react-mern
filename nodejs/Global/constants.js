@@ -63,7 +63,8 @@ const authMessages = {
 const routerPath = {
   auth : {
     login :'/signin',
-    register : '/signup'
+    register : '/signup',
+    user : '/user'
   },
   product : {
     post :'/add-product',

@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Modal } from "antd";
+import { Button, Form, Input, message, Modal} from "antd";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar";
 import "../../styles/products.css";
@@ -13,6 +13,7 @@ export default function Product() {
   const [accessToken, setAccessToken] = useState();
   const [isEditingMode, setIsEditingMode] = useState(false);
   const [editDetails, setEditDetails] = useState(Object);
+  const [imageUrl,setImageUrl] = useState<any>()
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -27,6 +28,7 @@ export default function Product() {
       price: data.price,
     });
     setIsEditingMode(true);
+    setImageUrl(data.image)
   };
 
   // let navigate = useNavigate();
@@ -39,6 +41,7 @@ export default function Product() {
   const handleCancel = () => {
     setIsModalOpen(false);
     setIsEditingMode(false);
+    setImageUrl('')
     form.resetFields();
   };
   const submit = (formValues: any) => {
@@ -48,6 +51,7 @@ export default function Product() {
       "Access-Control-Allow-Origin": "*",
     };
     if (!isEditingMode) {
+      formValues.image = imageUrl;
       try {
         axios
           .post(environment.baseUrl + "add-product", formValues, {
@@ -56,6 +60,7 @@ export default function Product() {
           .then((response) => {
             message.success("Product added successfully");
             setIsModalOpen(false);
+            setImageUrl('')
             form.resetFields();
           })
           .catch((err) => {
@@ -78,6 +83,7 @@ export default function Product() {
           message.success("Product updated successfully");
           setIsModalOpen(false);
           setIsEditingMode(false);
+          setImageUrl('')
           form.resetFields();
         })
         .catch((err) => {
@@ -85,6 +91,16 @@ export default function Product() {
         });
     }
   };
+
+  const fileChangeEvent = ((event:any)=>{
+   const file = event.target.files[0];
+   const reader = new FileReader();
+   reader.readAsDataURL(file);
+   reader.onload = (_event)=>{
+    setImageUrl(reader.result)
+   }
+  
+  })
   return (
     <div>
       <Navbar />
@@ -134,14 +150,24 @@ export default function Product() {
             label={Products.formFields.Price.label}
             name={Products.formFields.Price.name}
           >
-            <Input type='number'/>
+            <Input type="number" />
           </Form.Item>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+            <input type={"file"} onChange={fileChangeEvent} accept={"image/*"} />
+          </Form.Item>
+
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
               {isEditingMode ? "Update" : "Add"}
             </Button>
           </Form.Item>
         </Form>
+        {imageUrl && (
+          <div style={{paddingLeft:"8rem"}}>
+          <img src={imageUrl} width="150" height="150" alt="prod"></img>
+        </div>
+        )}
+        
       </Modal>
       <ProductList onEdit={getEditProduct} />
     </div>

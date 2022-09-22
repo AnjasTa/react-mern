@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { environment } from "../../environments";
 import { alertMessages, Products } from "../../Global/constants";
 import "../../styles/productList.css";
+// import axios from "../../configuration/config"
 
 interface DataType {
   key: string;
@@ -12,6 +13,7 @@ interface DataType {
   productDescription: string;
   productType: string;
   price: number;
+  image : string;
 }
 
 export default function ProductList(props:any) {
@@ -33,6 +35,14 @@ export default function ProductList(props:any) {
       });
   }, [props]);
   const columns: ColumnsType<DataType> = [
+    {
+      title : "Image",
+      dataIndex:"image",
+      key:"image",
+      render: (_, record) => (
+        <img src={record.image} width="100" height="50"/>
+      ),
+    },
     {
       title: "Product Name",
       dataIndex: "productName",
