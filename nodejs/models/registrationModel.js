@@ -1,6 +1,7 @@
 
 const mongoose  = require('mongoose');
 const jwt = require('jsonwebtoken');
+const {jwtKey} = require('../configuration/config')
 
 const schema = mongoose.Schema;
 const Registration = new schema({
@@ -12,7 +13,7 @@ password : {type:String}
 })
 
 Registration.methods.generateAuthToken = (async(id)=>{
-    const token = await jwt.sign({_id:id.toString()}, 'secretkey')
+    const token = await jwt.sign({_id:id.toString()}, jwtKey)
     return token;
 })
   

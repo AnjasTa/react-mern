@@ -1,22 +1,34 @@
+const userHelpers = require("../helpers/user-helper");
+const authMessages = require("../Global/constants");
 
-  const userHelpers = require('../helpers/user-helper')
+module.exports.login_post = (req, res) => {
+  userHelpers.userLogin(req.body).then((data) => {
+    if (data.status == true) {
+      res.send({
+        results: req.body,
+        status: true,
+        message: authMessages.authMessages.login.success,
+        access_token: data.access_token,
+      });
+    } else {
+      res.send({
+        message: authMessages.authMessages.login.error,
+        status: false,
+      });
+    }
+  });
+};
 
-  module.exports.login_post = (req, res) => {
-    userHelpers.userLogin(req.body).then((data)=>{
-      if(data.status==true){
-        res.send({results:req.body,status:true,message:'login successfull',access_token:data.access_token})
-      }
-      else{
-        res.send({message:'invalid credentials',status:false})
-      }
-    })
-  }
-
-  module.exports.registration_post=  (req, res) => {
-     userHelpers.userRegistration(req.body).then((data)=>{
-      res.json({results:data,message:'Registration successfull'})
+module.exports.registration_post = (req, res) => {
+  userHelpers.userRegistration(req.body).then(
+    (data) => {
+      res.json({
+        results: data,
+        message: authMessages.authMessages.register.success,
+      });
     },
-    err=>{
+    (err) => {
       res.json(err);
-    })
-  }
+    }
+  );
+};
