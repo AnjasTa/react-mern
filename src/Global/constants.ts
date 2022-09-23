@@ -84,6 +84,10 @@ const alertMessages = {
   registration : {
     success :"Registred successfully"
   },
+  userUpload : {
+    success : "Photo Uploaded successfully",
+    error : "Something went wrong"
+  }
 };
 
 const confirmPopup = {
