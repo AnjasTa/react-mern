@@ -64,7 +64,7 @@ const routerPath = {
   auth : {
     login :'/signin',
     register : '/signup',
-    user : '/user'
+    user : '/singleFile'
   },
   product : {
     post :'/add-product',

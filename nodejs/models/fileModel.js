@@ -1,19 +1,24 @@
-// const mongoose  = require('mongoose');
-// const fileSchema = mongoose.Schema(
-//     {
-//       file_path: {
-//         type: String,
-      
-//       },
-//       file_mimetype: {
-//         type: String,
-      
-//       }
-//     },
+const mongoose = require('mongoose');
 
-//   );
-  
-//   const fileModel = mongoose.model('File', fileSchema);
-  
-//   module.exports = fileModel;
-  
+const Schema = mongoose.Schema;
+
+const singleFileSchema = new Schema({
+    fileName: {
+        type: String,
+        required: true
+    },
+    filePath: {
+        type: String,
+        required: true
+    },
+    fileType: {
+        type: String,
+        required: true
+    },
+    fileSize: {
+        type: String,
+        required: true
+    }
+}, {timestamps: true});
+
+module.exports = mongoose.model('SingleFile', singleFileSchema);
