@@ -11,12 +11,12 @@ module.exports = {
       });
     });
   },
-  getProduct: () => {
+  getProduct: (id) => {
     return new Promise(async (resolve, reject) => {
-      products.find((error, data) => {
+      products.find({userId:id.userId.toString()},(error, data) => {
         if (error) {
         } else {
-          resolve(data);
+          resolve(data)
         }
       });
     });

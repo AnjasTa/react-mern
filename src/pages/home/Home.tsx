@@ -11,24 +11,27 @@ export default function Home() {
   const [userImage, SetUserImage] = useState<any>();
   const [userImg, setUserimg] = useState<any>();
   const [success,SetSuccess] = useState(false);
+  const [accessToken, setAccessToken] = useState();
 
   useEffect(() => {
     let objectData: any = localStorage.getItem("loginDetails");
+    const token: any = localStorage.getItem("access-token");
+    setAccessToken(token);
     setloginDetails(JSON.parse(objectData));
     const headers = {
+        Authorization: `Bearer ${accessToken}`,
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
     };
     axios
       .get(environment.baseUrl + "getSingleFiles", { headers: headers })
       .then((res) => {
-        const images = res.data;
-        setUserimg(images[0].filePath);
+        setUserimg(res.data.results[0].filePath);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [success]);
+  }, [success,accessToken]);
 
   const fileUpload = (event: any) => {
     SetUserImage(event.target.files[0]);
@@ -38,6 +41,7 @@ export default function Home() {
     const formData = new FormData();
     formData.append("file", userImage);
     const headers = {
+        Authorization: `Bearer ${accessToken}`,
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
     };
@@ -56,7 +60,7 @@ export default function Home() {
     <div>
       <Navbar />
       <div className="profile">
-        {userImg && ( <img src={environment.baseUrl + userImg} width="200" height="200" alt="userimage" />)}
+        {userImg && ( <img src={environment.baseUrl + userImg} width="200" height="200" alt="userimage" style={{borderRadius:"50%"}} />)}
       </div>
       <div className="home">
         <h1>Welcome</h1>

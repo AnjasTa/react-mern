@@ -7,7 +7,8 @@ const Products = new schema({
     productDescription:{type:String},
     productType:{type:String},
     price:{type:Number,required:[true,validation.dataBase.validationErrors.price]},
-    image:{type:String}
+    image:{type:String},
+    userId:{type:String}
 })
 
 module.exports = mongoose.model('Products',Products)

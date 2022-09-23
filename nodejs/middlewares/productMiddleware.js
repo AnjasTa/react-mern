@@ -8,6 +8,7 @@ const prod = async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer ', '');
         const decoded = jwt.verify(token,jwtKey);
         const user = await registration.findOne({ _id: decoded._id});
+        req.body.userId = user._id;
         // req.token = token
         next()
     } catch (e) {
