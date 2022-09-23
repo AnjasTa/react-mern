@@ -18,7 +18,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       const user = await registration.findOne({ email: userData.email });
       if (user) {
-        const status = bcrypt.compare(userData.password, user.password);
+        const status = await bcrypt.compare(userData.password, user.password);
         if (status) {
           const token = await user.generateAuthToken(user._id);
           resolve({status:true,access_token:token});
