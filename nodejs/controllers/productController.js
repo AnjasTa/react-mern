@@ -34,7 +34,7 @@ module.exports.product_post = (req, res) => {
 };
 
 module.exports.product_fetch = (req, res) => {
-  productHelpers.getProduct(req.body).then((data) => {
+  productHelpers.getProduct(req).then((data) => {
     res
       .status(200)
       .send({

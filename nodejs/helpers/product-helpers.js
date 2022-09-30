@@ -11,9 +11,16 @@ module.exports = {
       });
     });
   },
-  getProduct: (id) => {
+  getProduct: (data) => {
+    let query = {};
+    query = {userId:data.body.userId.toString()}
+    let filter;
+    if(data.query.name){
+      filter = {productName:data.query.name.replaceAll('"', '')}
+      query={...query,productName:data.query.name.replaceAll('"', '')}
+    }
     return new Promise(async (resolve, reject) => {
-      products.find({userId:id.userId.toString()},(error, data) => {
+      products.find(query,(error, data) => {
         if (error) {
         } else {
           resolve(data)
@@ -46,3 +53,22 @@ module.exports = {
     })
   }
 };
+
+
+
+/*
+ getProduct: (id) => {
+    return new Promise(async (resolve, reject) => {
+      products.find({userId:id.userId.toString()}).populate({
+        "path":'get-product',
+        "match":{productName:"Nike"}
+      }).exec((err,data)=>{
+        if(err){
+          console.log(err)
+        }
+        else{
+          resolve(data)
+        }
+      })
+    });
+  },*/

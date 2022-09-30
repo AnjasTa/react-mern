@@ -2,5 +2,8 @@
     padding: 2rem 2rem 2rem 2rem;
     font-size: larger;
     font-weight: bolder;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
 
 }

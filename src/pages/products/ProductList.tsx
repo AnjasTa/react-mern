@@ -1,4 +1,4 @@
-import { Button, Popconfirm, Space, Table, Tag } from "antd";
+import { Button, Input, Popconfirm, Space, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { environment } from "../../environments";
 import { alertMessages, Products } from "../../Global/constants";
 import "../../styles/productList.css";
 // import axios from "../../configuration/config"
+const { Search } = Input;
 
 interface DataType {
   key: string;
@@ -18,6 +19,7 @@ interface DataType {
 
 export default function ProductList(props:any) {
   const [product, SetProduct] = useState<DataType[]>([]);
+  const [nameQuery,setNameQuery] = useState('')
   useEffect(() => {
     const token = localStorage.getItem("access-token");
     const headers = {
@@ -26,14 +28,14 @@ export default function ProductList(props:any) {
       "Access-Control-Allow-Origin": "*",
     };
     axios
-      .get(environment.baseUrl + "get-product", { headers: headers })
+      .get(environment.baseUrl + "get-product/?name="+nameQuery, { headers: headers })
       .then((result: any) => {
         SetProduct(result.data.results);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [props]);
+  }, [props,nameQuery]);
   const columns: ColumnsType<DataType> = [
     {
       title : "Image",
@@ -110,10 +112,15 @@ export default function ProductList(props:any) {
       });
   };
 
+  const onSearch = ((value:string)=>{
+    setNameQuery(value)
+  })
+
   return (
     <>
-      <div>
-        <h3 className="productTitle">Products</h3>
+      <div className="productTitle">
+        <h3>Products</h3>
+        <Search placeholder="search product" onSearch={onSearch} style={{ width: 200 }} />
       </div>
       <Table
         columns={columns}
